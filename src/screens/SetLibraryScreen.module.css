@@ -1,0 +1,71 @@
+.background {
+  color: #4f6367;
+  background: #eef5db;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 3%;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.add {
+  width: 50px;
+  height: 50px;
+  color: #fe5f55;
+  padding: 10%;
+}
+
+.add:hover {
+  transform: scale(1.05);
+}
+
+.addContainer {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.titleContainer {
+  justify-self: center;
+  flex: 1;
+  position: relative;
+}
+
+.header {
+  padding-top: 10px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content{
+  flex: 4;
+  overflow-y: scroll;
+}
+
+.emptySetContainer {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  height: 100%;
+}

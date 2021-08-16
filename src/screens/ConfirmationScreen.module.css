@@ -1,0 +1,25 @@
+.download {
+  width: 300px;
+  height: 300px;
+  color: #fe5f55;
+  flex: 1;
+}
+.download:hover {
+  transform: scale(1.1);
+}
+
+.iconContainer {
+  flex: 8;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 3%;
+    margin-top: 2%;
+  }

@@ -1,0 +1,52 @@
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+
+.zoneContainer {
+  display: flex;
+  flex: 5;
+  border: 5px dashed #fe5f55;
+  border-radius: 20px;
+  height: 85%;
+}
+.upload {
+  width: 250px;
+  height: 250px;
+  color: #fe5f55;
+  flex: 1;
+}
+
+.iconContainer {
+  flex: 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.textContainer {
+  flex: 1;
+}
+
+.uploadContainer {
+  flex: 7;
+}
+
+.videoContainer {
+  flex: 6;
+}
+
+.download {
+    width: 250px;
+    height: 250px;
+    color: #fe5f55;
+    flex: 1;
+  }
+  .download:hover {
+    transform: scale(1.1);
+  }
+  

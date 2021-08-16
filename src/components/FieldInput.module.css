@@ -1,0 +1,17 @@
+.container {
+  flex:1;
+  display: flex;
+  min-width: 0;
+}
+
+.input {
+    color: #4F6367;
+    font-family: 'Montserrat';
+    position: relative;
+    flex: 1;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 0;
+  }

@@ -1,0 +1,78 @@
+.fieldsContainer {
+  flex: 5;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 2%;
+}
+
+.identifier {
+  flex: 1;
+}
+
+.additionalDateStyle {
+  color: #4f6367;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  border: none;
+  border-radius: 10px;
+  flex: 1;
+  background-color: white;
+}
+.input {
+  color: #4f6367;
+  font-family: 'Montserrat';
+  position: relative;
+  font-size: 36;
+  flex: 1;
+  font-size: 24px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.textAreaContainer {
+  display: flex;
+  flex: 1;
+}
+
+.textField {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.textFieldContainer {
+  display: flex;
+  flex: 3;
+  flex-direction: column;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}

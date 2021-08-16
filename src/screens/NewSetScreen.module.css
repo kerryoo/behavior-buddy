@@ -1,0 +1,74 @@
+.background {
+  color: #4f6367;
+  background: #eef5db;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 3%;
+}
+
+.fieldsContainer {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding-bottom: 2%;
+  align-items: flex-end;
+  
+}
+
+.inputBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.code {
+  flex-direction: row;
+  display: flex;
+  background-color: white;
+  margin-bottom: 1%;
+  padding: 1%;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+
+.tags {
+  flex: 10;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.add {
+  width: 50px;
+  height: 50px;
+  color: #fe5f55;
+}
+
+.add:hover {
+  transform: scale(1.05);
+}
+
+.remove {
+  width: 20px;
+  height: 20px;
+  color: #4F6367;
+}
+.remove:hover {
+  transform: scale(1.05);
+}
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
