@@ -16,6 +16,8 @@ const HomeScreen = () => {
       set: null,
       data: null,
       videoPath: null,
+      videoStartTime: 0,
+      videoName: "",
     },
   };
 
@@ -40,9 +42,22 @@ const HomeScreen = () => {
           <Button label="New Session" />
         </Link>
       </div>
+      <div className={styles.buttonContainer}>
+        <Link
+          to={{ pathname: '/import', state: state }}
+          style={{ flex: 1, display: 'flex', textDecoration: 'none' }}
+        >
+          <Button label="Start Session from Pre-Existing File" />
+        </Link>
+      </div>
 
       <div className={styles.buttonContainer}>
-        <Button label="About" onClick={() => console.log('about')} />
+        <Link
+          to={{ pathname: '/about', state: state }}
+          style={{ flex: 1, display: 'flex', textDecoration: 'none' }}
+        >
+          <Button label="About" />
+        </Link>
       </div>
     </div>
   );

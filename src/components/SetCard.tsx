@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineEdit } from 'react-icons/ai';
 import { SetType } from '../constants/userDefinedTypes';
 import styles from './SetCard.module.css';
 
@@ -8,9 +8,10 @@ interface Props {
   selected: boolean;
   onPress: () => void;
   onRemovePress: () => void;
+  onEdit: () => void;
 }
 
-const SetCard = ({ setProps, selected, onPress, onRemovePress }: Props) => {
+const SetCard = ({ setProps, selected, onPress, onRemovePress, onEdit }: Props) => {
   const { name, interval, codes, description } = setProps;
 
   const renderCodes = () => {
@@ -37,22 +38,29 @@ const SetCard = ({ setProps, selected, onPress, onRemovePress }: Props) => {
       style={selected ? { borderColor: '#FE5F55' } : { borderColor: 'white' }}
       onClick={onPress}
     >
-      <div className={styles.nameContainer}>
-        <h3>{name}</h3>
-        <AiOutlineClose
-          className={styles.close}
-          onClick={(e) => {
-            removeSet(e);
-            onRemovePress();
-          }}
-        />
-      </div>
       <div className={styles.property}>
+        <h3>{name}</h3>
         <p style={{ textAlign: 'left', margin: 0 }}>Interval: {interval}</p>
         <p style={{ textAlign: 'left', margin: 0 }}>Codes: {renderCodes()}</p>
         <p style={{ textAlign: 'left', margin: 0 }}>
           Description: {description}
         </p>
+      </div>
+
+      <div className={styles.icons}>
+        <AiOutlineClose
+          className={styles.icon}
+          onClick={(e) => {
+            removeSet(e);
+            onRemovePress();
+          }}
+        />
+        <AiOutlineEdit
+          className={styles.icon}
+          onClick={() => {
+            onEdit();
+          }}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,7 @@
+.buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 3%;
+    margin-top: 2%;
+  }

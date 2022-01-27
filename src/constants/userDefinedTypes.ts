@@ -22,15 +22,28 @@ export interface SessionFile {
   set: SetType;
   data: TableRow[];
   videoPath: string;
+  videoStartTime: number;
+  videoName: string;
 }
 
 export interface DataPoint {
   code: string;
   value: number;
-  frequency: boolean;
+  frequency?: boolean;
 }
 
 export interface TableRow {
   timestamp: number;
   codes: DataPoint[];
+}
+
+export interface MetaData {
+  generalInfo: GeneralInfo;
+  sessionDate: string;
+  setName: string;
+  interval: string;
+  setDescription: string;
+  numberOfEntries: string;
+  videoName: string;
+  videoStartTime: string;
 }

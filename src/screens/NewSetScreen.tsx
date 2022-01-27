@@ -21,14 +21,33 @@ const NewSetScreen = () => {
     return <ErrorScreen />;
   }
 
-  const { sessionFile } = location.state;
+  const { sessionFile, setToEdit } = location.state;
   const history = useHistory();
+
+  let editingSet = false;
+  let initialData: SetType = {
+    name: '',
+    interval: 0,
+    description: '',
+    codes: [],
+  };
+  if (setToEdit) {
+    editingSet = true;
+    initialData = setToEdit;
+  }
 
   const {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      name: initialData.name,
+      interval: initialData.interval,
+      description: initialData.description,
+    },
+  });
 
   const {
     control: codeControl,
@@ -36,7 +55,7 @@ const NewSetScreen = () => {
     formState: { isValid: codesValid },
   } = useForm({ mode: 'onChange' });
 
-  const [codes, setCodes] = useState<CodeType[]>([]);
+  const [codes, setCodes] = useState<CodeType[]>(initialData.codes);
   const [frequency, setFrequency] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -76,9 +95,31 @@ const NewSetScreen = () => {
       const oldSets = JSON.parse(oldSetsString);
       oldSets.forEach((set) => {
         if (set.name === name) {
-          setError(
-            'You have a set with the same name! Please rename this new set or edit the old one.'
-          );
+          if (
+            error ===
+            'You have a set with the same name. Please click "Create Set" again if you would like to overwrite the old set.'
+          ) {
+            const newSets = oldSets.filter((obj) => obj.name !== name);
+            newSets.push(setToBeSaved);
+            localStorage.setItem('sets', JSON.stringify(newSets));
+            console.log('Saved new set');
+            history.push({
+              pathname: '/setlibrary',
+              state: {
+                sessionFile: {
+                  generalInfo: sessionFile.generalInfo,
+                  set: setToBeSaved,
+                  data: sessionFile.data,
+                  videoPath: sessionFile.videoPath,
+                  videoStartTime: sessionFile.videoStartTime,
+                },
+              },
+            });
+          } else {
+            setError(
+              'You have a set with the same name. Please click "Create Set" again if you would like to overwrite the old set.'
+            );
+          }
           foundSameName = true;
         }
       });
@@ -94,6 +135,8 @@ const NewSetScreen = () => {
               set: setToBeSaved,
               data: sessionFile.data,
               videoPath: sessionFile.videoPath,
+              videoStartTime: sessionFile.videoStartTime,
+              videoName: sessionFile.videoName,
             },
           },
         });
@@ -108,6 +151,8 @@ const NewSetScreen = () => {
             set: setToBeSaved,
             data: sessionFile.data,
             videoPath: sessionFile.videoPath,
+            videoStartTime: sessionFile.videoStartTime,
+            videoName: sessionFile.videoName,
           },
         },
       });
@@ -140,7 +185,7 @@ const NewSetScreen = () => {
   return (
     <div className={'background'}>
       <div className="container">
-        <h1>New Set</h1>
+        <h1>{editingSet ? 'Edit Set' : 'New Set'}</h1>
         <div className={styles.fieldsContainer}>
           <div className={styles.header}>
             <div className={styles.inputBox} style={{ paddingRight: '2%' }}>
@@ -149,6 +194,7 @@ const NewSetScreen = () => {
                 control={control}
                 name="name"
                 rules={{ required: true }}
+                defaultValue={initialData.name}
               />
             </div>
             <div className={styles.inputBox}>
@@ -157,6 +203,7 @@ const NewSetScreen = () => {
                 control={control}
                 name="interval"
                 rules={{ required: true }}
+                defaultValue={initialData.interval.toString()}
               />
             </div>
           </div>
@@ -166,6 +213,7 @@ const NewSetScreen = () => {
               control={control}
               name="description"
               rules={{ required: false }}
+              defaultValue={initialData.description}
             />
           </div>
         </div>
@@ -225,8 +273,8 @@ const NewSetScreen = () => {
         <div className={styles.tags}>
           {codes.map((code) => renderCode(code))}
         </div>
-        <div style={{flex:1}}>
-          <p style={{color: '#FE5F55'}}>{error}</p>
+        <div style={{ flex: 1, marginTop: '1%' }}>
+          <p style={{ color: '#FE5F55' }}>{error}</p>
         </div>
         <div className={styles.buttonsContainer}>
           <LinkButton

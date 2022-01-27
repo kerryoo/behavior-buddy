@@ -6,8 +6,10 @@ import VideoPlayerScreen from './screens/VideoPlayerScreen';
 import GeneralInfoScreen from './screens/GeneralInfoScreen';
 import NewSetScreen from './screens/NewSetScreen';
 import SetLibraryScreen from './screens/SetLibraryScreen';
-import ConfirmationScreen from './screens/ConfirmationScreen'
+import ConfirmationScreen from './screens/ConfirmationScreen';
 import ReliabilityScreen from './screens/ReliabilityScreen';
+import AboutScreen from './screens/AboutScreen';
+import ImportScreen from './screens/ImportScreen';
 import './App.global.css';
 
 export default function App() {
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/videoplayer" component={VideoPlayerScreen} />
         <Route path="/confirm" component={ConfirmationScreen} />
         <Route path="/reliability" component={ReliabilityScreen} />
+        <Route path="/about" component={AboutScreen} />
+        <Route path="/import" component={ImportScreen} />
         <Route path="/" component={HomeScreen} />
       </Switch>
     </Router>

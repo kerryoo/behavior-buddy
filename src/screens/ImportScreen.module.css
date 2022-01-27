@@ -1,5 +1,38 @@
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+
+.upload {
+  width: 100px;
+  height: 100px;
+  color: #fe5f55;
+  flex: 1;
+}
+.uploadContainer {
+  flex: 6;
+}
+
+.zoneContainer {
+  display: flex;
+  flex: 5;
+  border: 5px dashed #fe5f55;
+  border-radius: 20px;
+  height: 100%;
+}
+
+.iconContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .fieldsContainer {
-  flex: 7;
+  flex: 3;
   flex-direction: column;
   display: flex;
   
@@ -49,7 +82,7 @@
 }
 .textFieldContainer {
   display: flex;
-  flex: 5;
+  flex: 3;
   flex-direction: column;
 }
 
@@ -75,4 +108,10 @@
   display: flex;
   flex-direction: row;
   flex: 1;
+}
+.videoContainer {
+  flex: 2;
+  align-self: center;
+  align-content: center;
+  display: flex;
 }

@@ -2,26 +2,19 @@
     border: 6px white solid;
     border-radius: 20px;
     background-color: white;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
     flex: 1;
     margin-bottom: 2%;
     margin-right: 2%;
-    padding: 1%;
   }
 
-.nameContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .property {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
-    width: 100%;
+    flex: 10;
+    padding: 1%;
 }
 
 .propertyNames {
@@ -35,12 +28,21 @@
   display: flex;
 }
 
-.close {
+.icons {
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.icon {
   width: 30px;
   height: 30px;
   color: #80969b;
+  flex: 1
 }
-.close:hover {
+.icon:hover {
   transform: scale(1.05);
 }
 

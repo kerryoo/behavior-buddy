@@ -6,6 +6,7 @@ import { useLocation, useHistory } from 'react-router';
 import { GeneralInfo, SessionFile } from '../constants/userDefinedTypes';
 import ErrorScreen from './ErrorScreen';
 import LinkButton from '../components/LinkButton';
+import { session } from 'electron';
 
 const GeneralInfoScreen = () => {
   const location = useLocation();
@@ -43,6 +44,8 @@ const GeneralInfoScreen = () => {
           set: sessionFile.set,
           data: sessionFile.data,
           videoPath: sessionFile.videoPath,
+          videoStartTime: sessionFile.videoStartTime,
+          videoName: sessionFile.videoName,
         },
       },
     });
@@ -82,6 +85,7 @@ const GeneralInfoScreen = () => {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <textarea
                     className={styles.input}
+                    style={{resize: 'none', flex:'1'}}
                     onBlur={onBlur}
                     onChange={(value) => {
                       onChange(value);

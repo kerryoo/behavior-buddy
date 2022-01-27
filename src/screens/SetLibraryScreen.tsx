@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 
 import SetCard from '../components/SetCard';
@@ -15,6 +15,7 @@ const SetLibraryScreen = () => {
   if (!location.state) {
     return <ErrorScreen />;
   }
+  const history = useHistory();
   const { sessionFile } = location.state;
   const setsString = localStorage.getItem('sets');
   const sets = setsString ? JSON.parse(localStorage.getItem('sets')) : null;
@@ -43,6 +44,8 @@ const SetLibraryScreen = () => {
             set: valueToSet,
             data: null,
             videoPath: null,
+            videoStartTime: 0,
+            videoName: "",
           });
         }}
         onRemovePress={() => {
@@ -53,10 +56,21 @@ const SetLibraryScreen = () => {
               set: null,
               data: null,
               videoPath: null,
+              videoStartTime: 0,
+              videoName: "",
             });
           } else {
             forceUpdate();
           }
+        }}
+        onEdit={() => {
+          history.push({
+            pathname: '/newset',
+            state: {
+              sessionFile: sessionFile,
+              setToEdit: item,
+            },
+          });
         }}
       />
     );

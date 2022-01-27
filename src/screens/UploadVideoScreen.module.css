@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 3%;
-  margin-top: 2%;
+  margin-top: 5%;
 }
 
 .zoneContainer {
@@ -11,7 +11,7 @@
   flex: 5;
   border: 5px dashed #fe5f55;
   border-radius: 20px;
-  height: 80%;
+  height: 100%;
 }
 .upload {
   width: 100px;
@@ -30,12 +30,15 @@
 
 .textContainer {
     flex:1;
+    display: flex;
+    justify-content: space-between;
+    
 }
 
 .uploadContainer {
-    flex: 1;
+    flex: 6;
 }
 
 .videoContainer {
-    flex: 5;
+    flex: 4;
 }

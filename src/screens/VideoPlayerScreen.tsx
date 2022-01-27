@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import ReactPlayer from 'react-player/file';
 import {
@@ -18,8 +18,8 @@ const VideoPlayerScreen = () => {
   if (!location.state) {
     return <ErrorScreen />;
   }
-  const { sessionFile } = location.state;
-  const { videoPath } = sessionFile;
+  const { sessionFile, fromImport } = location.state;
+  const { videoPath, videoStartTime } = sessionFile;
   const { codes, interval }: SetType = sessionFile.set;
 
   if (!videoPath || !sessionFile) {
@@ -31,8 +31,12 @@ const VideoPlayerScreen = () => {
   const [rows, setRows] = useState<TableRow[]>(initialRows);
   const [autoPause, setAutoPause] = useState<boolean>(false);
   const [playing, setPlaying] = useState<boolean>(true);
-  const [currentTimeSlice, setCurrentTimeSlice] = useState<number>(0);
+  const [currentTimeSlice, setCurrentTimeSlice] = useState<number>(
+    videoStartTime
+  );
   const [timeUntilCode, setTimeUntilCode] = useState<number>(0);
+  const [maxRows, setMaxRows] = useState(0);
+  const [initialized, setInitialized] = useState(false);
   const playerRef = useRef();
 
   const msToTime = (s) => {
@@ -99,7 +103,18 @@ const VideoPlayerScreen = () => {
 
   const renderRow = (row: TableRow, rowIndex: number) => {
     return (
-      <tr>
+      <tr
+        style={
+          currentTimeSlice === row.timestamp
+            ? {
+                backgroundColor: '#4f6367',
+                borderRadius: '5px',
+                paddingTop: '3px',
+                paddingBottom: '3px',
+              }
+            : {}
+        }
+      >
         <td
           className={styles.timestamp}
           style={
@@ -126,7 +141,7 @@ const VideoPlayerScreen = () => {
   };
 
   const onAddNewRow = () => {
-    const timestamp = rows.length * interval;
+    const timestamp = videoStartTime + rows.length * interval;
     const codesCopy: DataPoint[] = codes.map((code) => ({
       code: code.name,
       value: 0,
@@ -154,39 +169,82 @@ const VideoPlayerScreen = () => {
       <div className={styles.container}>
         <div className={styles.videoAndTable}>
           <div className={styles.videoSide}>
+            <div style={{ marginTop: '5%' }}>
+              <h3
+                style={
+                  currentTimeSlice < videoStartTime ? { color: '#FE5F55' } : {}
+                }
+              >
+                START TIME: {msToTime(videoStartTime * 1000)}
+              </h3>
+              <p
+                style={
+                  currentTimeSlice < videoStartTime
+                    ? { textAlign: 'left', color: '#FE5F55' }
+                    : { textAlign: 'left', color: 'transparent' }
+                }
+              >
+                You are behind the designated start time!
+              </p>
+            </div>
             <ReactPlayer
               url={videoPath}
               controls={true}
               width="100%"
+              height="35%"
               progressInterval={250}
               playing={playing}
               ref={playerRef}
+              onReady={() => {
+                if (!initialized) {
+                  setMaxRows(
+                    Math.floor(
+                      (playerRef.current.getDuration() - videoStartTime) /
+                        interval
+                    ) + 1
+                  );
+                  playerRef.current.seekTo(videoStartTime, 'seconds');
+                  setInitialized(true);
+                }
+              }}
               onProgress={() => {
                 const time = Math.floor(playerRef.current?.getCurrentTime());
-                if (time % interval === 0) {
-                  if (currentTimeSlice !== time && autoPause) {
-                    setPlaying(false);
-                  }
-                  setCurrentTimeSlice(time);
-                  setTimeUntilCode(0);
-                } else {
+                if (time < videoStartTime) {
+                  setTimeUntilCode(videoStartTime - time);
+                  setCurrentTimeSlice(0);
                   setPlaying(true);
-                  setTimeUntilCode(
-                    currentTimeSlice + parseInt(interval) - time
-                  );
+                } else {
+                  if ((time - videoStartTime) % interval === 0) {
+                    if (currentTimeSlice !== time && autoPause) {
+                      setPlaying(false);
+                    }
+                    setCurrentTimeSlice(time);
+                    setTimeUntilCode(0);
+                  } else {
+                    setPlaying(true);
+                    setTimeUntilCode(
+                      currentTimeSlice + parseInt(interval) - time
+                    );
+                  }
                 }
               }}
               onSeek={() => {
                 const time = Math.floor(playerRef.current?.getCurrentTime());
-                const secsToRemove = time % interval;
-                const target = time - secsToRemove;
-                setCurrentTimeSlice(target);
-                let timeTilCode = target + parseInt(interval) - time;
-                if (timeTilCode === parseInt(interval)) timeTilCode = 0;
-                setTimeUntilCode(timeTilCode);
+                if (time < videoStartTime) {
+                  setCurrentTimeSlice(0);
+                  setTimeUntilCode(videoStartTime - time);
+                } else {
+                  const secsToRemove = (time - videoStartTime) % interval;
+                  const target = time - secsToRemove;
+                  setCurrentTimeSlice(target);
+                  let timeTilCode = target + parseInt(interval) - time;
+                  if (timeTilCode === parseInt(interval)) timeTilCode = 0;
+                  setTimeUntilCode(timeTilCode);
+                }
               }}
             />
-            <div>
+
+            <div style={{ marginTop: '5%' }}>
               <div style={{ borderBottom: '2px solid #4F6367' }}>
                 <h2 style={{ textAlign: 'center' }}>SECONDS UNTIL NEXT CODE</h2>
               </div>
@@ -205,7 +263,9 @@ const VideoPlayerScreen = () => {
           <div className={styles.tableSide}>
             <div className={styles.tableSuperHeader}>
               <div className={styles.tableTitle}>
-                <h2>{sessionFile.generalInfo.subject.toUpperCase()}</h2>
+                <h2 style={{ margin: 0 }}>
+                  {sessionFile.generalInfo.subject.toUpperCase()}
+                </h2>
               </div>
               <div className={styles.tableButtons}>
                 {autoPause ? (
@@ -222,14 +282,23 @@ const VideoPlayerScreen = () => {
                     onClick={() => setAutoPause(true)}
                   />
                 )}
-                <AiOutlineMinusCircle
-                  className={styles.icon}
-                  onClick={onClearRow}
-                />
-                <AiOutlinePlusCircle
-                  className={styles.icon}
-                  onClick={onAddNewRow}
-                />
+
+                {rows.length > 0 ? (
+                  <AiOutlineMinusCircle
+                    className={styles.icon}
+                    onClick={onClearRow}
+                  />
+                ) : (
+                  <AiOutlineMinusCircle className={styles.disabledIcon} />
+                )}
+                {rows.length <= maxRows ? (
+                  <AiOutlinePlusCircle
+                    className={styles.icon}
+                    onClick={onAddNewRow}
+                  />
+                ) : (
+                  <AiOutlinePlusCircle className={styles.disabledIcon} />
+                )}
               </div>
             </div>
             <div className={styles.tableHeader}>
@@ -246,7 +315,7 @@ const VideoPlayerScreen = () => {
         <div className={styles.buttonsContainer}>
           <LinkButton
             label="Go Back"
-            link="/uploadvideo"
+            link={fromImport ? '/import' : '/uploadvideo'}
             state={{ sessionFile: sessionFile }}
             disabled={false}
           />
@@ -259,7 +328,10 @@ const VideoPlayerScreen = () => {
                 set: sessionFile.set,
                 data: rows,
                 videoPath: sessionFile.videoPath,
+                videoStartTime: sessionFile.videoStartTime,
+                videoName: sessionFile.videoName,
               },
+              fromImport: fromImport,
             }}
             disabled={false}
           />
