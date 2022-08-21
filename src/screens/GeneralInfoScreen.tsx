@@ -39,7 +39,7 @@ const GeneralInfoScreen = () => {
           generalInfo: {
             subject: data.subject,
             observer: data.observer,
-            notes: data.notes,
+            notes: data.notes.trim().replace(/(\r\n|\n|\r)/gm, ""),
           },
           set: sessionFile.set,
           data: sessionFile.data,

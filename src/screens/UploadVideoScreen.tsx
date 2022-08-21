@@ -108,7 +108,7 @@ const UploadVideoScreen = () => {
             <ReactPlayer
               url={videoPath}
               width="100%"
-              height="100%"
+              height={500}
               style={{ flex: 1 }}
               controls={true}
               playing={playing}

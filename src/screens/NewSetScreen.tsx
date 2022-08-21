@@ -53,6 +53,7 @@ const NewSetScreen = () => {
     control: codeControl,
     handleSubmit: handleCodeSubmit,
     formState: { isValid: codesValid },
+    reset,
   } = useForm({ mode: 'onChange' });
 
   const [codes, setCodes] = useState<CodeType[]>(initialData.codes);

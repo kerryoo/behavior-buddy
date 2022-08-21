@@ -102,7 +102,6 @@ const ReliabilityScreen = () => {
         };
         currTableRow.codes.push(currDataPoint);
       }
-      currTableRow.codes.sort((a, b) => (a.code > b.code ? 1 : -1));
       result.push(currTableRow);
     }
     return result;
@@ -118,7 +117,7 @@ const ReliabilityScreen = () => {
       };
       codes.push(currCode);
     }
-    return codes.sort((a, b) => (a.name > b.name ? 1 : -1));
+    return codes;
   };
 
   const getMetaDataFromArr = (arr: string[][]) => {
@@ -165,7 +164,7 @@ const ReliabilityScreen = () => {
         setErrorMessage(
           'It seems that there are a mismatch of interval between the two files.'
         );
-      } else if (metaData1.videoStartTime !== metaData2.videoStartTime) {
+      } else if (hmsToSecs(metaData1.videoStartTime) !== hmsToSecs(metaData2.videoStartTime)) {
         setErrorMessage(
           'It seems the start time between the two files do not match.'
         );
@@ -229,7 +228,7 @@ const ReliabilityScreen = () => {
   const createExcel = () => {
     let sheetHeader = ['Time'];
     for (let i = 0; i < firstFileData[0].codes.length; i++) {
-      const codeName = firstFileData[0].codes[0].code;
+      const codeName = firstFileData[0].codes[i].code;
       sheetHeader.push(codeName + ', ' + firstFileName);
       sheetHeader.push(codeName + ', ' + secondFileName);
       sheetHeader.push(codeName + ' Match');
