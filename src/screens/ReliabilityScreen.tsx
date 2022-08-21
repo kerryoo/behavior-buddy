@@ -164,7 +164,10 @@ const ReliabilityScreen = () => {
         setErrorMessage(
           'It seems that there are a mismatch of interval between the two files.'
         );
-      } else if (hmsToSecs(metaData1.videoStartTime) !== hmsToSecs(metaData2.videoStartTime)) {
+      } else if (
+        hmsToSecs(metaData1.videoStartTime) !==
+        hmsToSecs(metaData2.videoStartTime)
+      ) {
         setErrorMessage(
           'It seems the start time between the two files do not match.'
         );
@@ -183,22 +186,30 @@ const ReliabilityScreen = () => {
           }
         }
 
-        setFirstFileName(
-          metaData1.generalInfo.subject + '_' + metaData1.generalInfo.observer
-        );
-        setSecondFileName(
-          metaData2.generalInfo.subject + '_' + metaData2.generalInfo.observer
-        );
-
-        if (firstFileName === secondFileName) {
-          setSecondFileName(secondFileName + '_1');
+        let truncatedFirstFileName =
+          metaData1.generalInfo.subject + '_' + metaData1.generalInfo.observer;
+        let truncatedSecondFileName =
+          metaData2.generalInfo.subject + '_' + metaData2.generalInfo.observer;
+        if (truncatedFirstFileName.length > 31) {
+          truncatedFirstFileName = truncatedFirstFileName.slice(30);
         }
+        if (truncatedSecondFileName.length > 31) {
+          truncatedSecondFileName = truncatedSecondFileName.slice(30);
+        }
+        if (truncatedFirstFileName === truncatedSecondFileName) {
+          if (truncatedSecondFileName.length > 29) {
+            truncatedSecondFileName = truncatedSecondFileName.slice(28)
+          }
+          truncatedSecondFileName += "_1";
+        }
+
+        setFirstFileName(truncatedFirstFileName);
+        setSecondFileName(truncatedSecondFileName);
 
         setFirstFileData(data1);
         setSecondFileData(data2);
-        setComparisonFileName(
-          metaData1.generalInfo.subject + '_' + 'Comparison'
-        );
+        const truncatedFileName = metaData1.generalInfo.subject.slice(19);
+        setComparisonFileName(truncatedFileName + '_Comparison');
 
         setArr1(tempArr1);
         setArr2(tempArr2);
